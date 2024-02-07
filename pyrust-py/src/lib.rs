@@ -3,7 +3,7 @@ use pyrust_lib::add_one;
 
 /// Formats the sum of two numbers as string.
 #[pyfunction]
-fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+pub fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
     let result = add_one(a, b);
     Ok(result.to_string())
 }
@@ -21,6 +21,7 @@ mod tests {
 
     #[test]
     fn test_example_class() {
+        // pyo3::prepare_freethreaded_python(); // required without `pyo3/auto-initialize` feature
         Python::with_gil(|_py| {
             assert_eq!(sum_as_string(2, 3).unwrap(), "6");
             assert_eq!(sum_as_string(0, 0).unwrap(), "1");
