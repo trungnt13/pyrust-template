@@ -29,8 +29,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Change directory
-        run: cd ${{ github.workspace }}/pyrust-py
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -38,6 +36,7 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: 'true'
           manylinux: auto
+          working-directory: ${{ github.workspace }}/pyrust-py
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
