@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Change directory
-        run: cd ${{ github.workspace }}/pyrust_py
+        run: cd ${{ github.workspace }}/pyrust-py
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
