@@ -23,12 +23,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
+        target: [x86_64] # x86, aarch64, armv7, s390x, ppc64le
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Change to the directory
+        run: cd ${{ github.workspace }}/pyrust_py
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -46,7 +48,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        target: [x64, x86]
+        target: [x64] # x86
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -69,7 +71,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [x86_64, aarch64]
+        target: [x86_64] # aarch64
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -105,7 +107,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    if: "startsWith(github.ref, 'refs/tags/')"
+    if: 'startsWith(github.ref, "refs/tags/")'
     needs: [linux, windows, macos, sdist]
     steps:
       - uses: actions/download-artifact@v3
@@ -114,7 +116,7 @@ jobs:
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
-          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+            MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
           command: upload
           args: --non-interactive --skip-existing *
